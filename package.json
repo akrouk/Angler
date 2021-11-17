@@ -1,0 +1,26 @@
+{
+  "name": "thjarkur",
+  "version": "1.0.0",
+  "description": "Valheim bot for Discord",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akrouk/thjarkur.git"
+  },
+  "author": "akrouk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akrouk/thjarkur/issues"
+  },
+  "homepage": "https://github.com/akrouk/thjarkur#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.3.1",
+    "gamedig": "^3.0.7"
+  }
+}
