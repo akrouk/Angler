@@ -1,6 +1,6 @@
 module.exports = {
     color: 0xd6a81c,
-    title: 'Server Info',
+    title: 'Valheim Server',
     fields: [
         {
             name: '🌐 Status',
