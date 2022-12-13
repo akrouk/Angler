@@ -1,4 +1,6 @@
-const { Card, ranks, suits } = require('./card');
+const { Card } = require('./card');
+const { Hand } = require('./hand');
+const ranks = require('./ranks'), suits = require('./suits');
 
 /** Class representing a deck of playing cards. */
 class Deck {
@@ -9,12 +11,13 @@ class Deck {
     constructor(hasJokers = false) {
         this.hasJokers = hasJokers;
 
-        const deck = hasJokers ? [ new Card(ranks.joker), new Card(ranks.joker) ] : [];
+        // If deck has jokers, populate it with 2 jokers
+        const deck = hasJokers ? [ new Card(ranks.first()), new Card(ranks.first()) ] : [];
 
-        for (const s in suits) {
-            for (const r in ranks) {
-                if (ranks[r].name === ranks.joker.name) continue;
-                deck.push(new Card(ranks[r], suits[s]));
+        for (const suit of [...suits.values()]) {
+            // Slice 1 to skip jokers - handled above 
+            for (const rank of [...ranks.values()].slice(1)) {
+                deck.push(new Card(rank, suit));
             }
         }
 
@@ -48,24 +51,10 @@ class Deck {
     /**
      * Draws a number of playing cards from the deck.
      * @param {number} n Number of playing cards to draw. 
-     * @param {string} delimiter Delimiter used to separate the values in the names and shorthand strings.
      * @returns 
      */
-    drawHand(n, delimiter = '\n') {
-        const cards = this.cards.splice(-n);
-        let names = "", shorthand = "", i = cards.length;
-
-        const concat = (a, b = undefined) => {
-            names += a;
-            shorthand += b ?? a;
-        }
-
-        for (const card of cards) {
-            concat(card.name, card.shorthand);
-            if (--i) concat(delimiter);
-        }
-
-        return { cards, names, shorthand };
+    drawHand(n = 7) {
+        return new Hand(this.cards.splice(-n));
     }
 }
 

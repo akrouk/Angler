@@ -1,10 +1,10 @@
 const read = require('fs-readdir-recursive');
-const { Client, Collection, Intents, Permissions } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
-require('./util/prototypes').definePrototypeFunctions();
+require('./util/general/prototypes').definePrototypeFunctions();
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
 const commandFiles = read('./commands').filter(file => file.endsWith('.c.js'));

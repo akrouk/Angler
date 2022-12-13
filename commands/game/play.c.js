@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { CommandInteraction } = require('discord.js');
-const { resolveCommandPath } = require('../../util/cpath');
+const { resolveCommandPath } = require('../../util/general/cpath');
 
 module.exports = {
 	data: new SlashCommandBuilder()
