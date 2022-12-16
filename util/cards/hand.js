@@ -36,7 +36,7 @@ class Hand {
 
     /**
      * Returns an array of all distinct ranks in the hand.
-     * @returns
+     * @returns 
      */
     get ranks() {
         return [...new Set(this.cards.map(card => card.rankName))];
