@@ -16,5 +16,5 @@ module.exports = new Collection([
     [ 'jack', { name: 'Jack', shorthand: 'J', weight: 11 } ],
     [ 'queen', { name: 'Queen', shorthand: 'Q', weight: 12 } ],
     [ 'king', { name: 'King', shorthand: 'K', weight: 13 } ],
-    [ 'ace', { name: 'Ace', shorthand: 'A', emoji: emojis.ace, weight: 14 } ]
+    [ 'ace', { name: 'Ace', shorthand: 'A', weight: 14 } ]
 ]); 

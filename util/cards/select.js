@@ -20,7 +20,7 @@ async function selectRank(options) {
             label: rank, 
             description: `Ask for a ${rank}.`, 
             value: rank,
-            emoji: emojis.queen
+            emoji: emojis[rank.toLowerCase()]
         })
     );
     

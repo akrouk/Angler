@@ -36,10 +36,7 @@ class Card {
         }
 
         this.rank = rank;
-        this.rankEmoji = rank.emoji;
-
         this.suit = suit;
-        this.suitEmoji = suit ? suit.emoji : '🃏';
     }
 
     /**
