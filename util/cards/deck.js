@@ -1,3 +1,4 @@
+const { Collection } = require('discord.js');
 const { Card } = require('./card');
 const { Hand } = require('./hand');
 const ranks = require('./ranks'), suits = require('./suits');
@@ -42,7 +43,7 @@ class Deck {
 
     /**
      * Draws a single playing card from the deck.
-     * @returns {Card}
+     * @returns
      */
     draw() {
         return this.cards.pop();
@@ -50,11 +51,12 @@ class Deck {
 
     /**
      * Draws a number of playing cards from the deck.
+     * @param {string} owner Name of player who owns the hand.
      * @param {number} n Number of playing cards to draw. 
      * @returns 
      */
-    drawHand(n = 7) {
-        return new Hand(this.cards.splice(-n));
+    drawHand(owner, n = 7) {
+        return new Hand(owner, this.cards.splice(-n));
     }
 }
 

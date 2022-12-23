@@ -3,6 +3,5 @@ module.exports = {
     ...require('./deck'),
     ...require('./hand'),
     ...require('./ranks'),
-    ...require('./suits'),
-    ...require('./select')
+    ...require('./suits')
 }

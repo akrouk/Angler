@@ -1,10 +1,10 @@
 const read = require('fs-readdir-recursive');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
+const { clientId, token } = require('./config.json');
 
 require('./util/general/prototypes').definePrototypeFunctions();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [ GatewayIntentBits.Guilds ] });
 
 client.commands = new Collection();
 const commandFiles = read('./commands').filter(file => file.endsWith('.c.js'));
@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-	console.log('Thjarkur is online.');
+	console.log('Angler is online.');
 });
 
 client.on('interactionCreate', async interaction => {

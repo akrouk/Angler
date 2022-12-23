@@ -1,5 +1,4 @@
 const { Collection } = require('discord.js');
-const emojis = require('../../emojis.json');
 
 /** Playing card ranks, including joker. */
 module.exports = new Collection([
