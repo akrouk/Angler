@@ -2,6 +2,11 @@ const { bold, userMention } = require('@discordjs/builders');
 const { User } = require('discord.js');
 const { Card } = require('../cards');
 
+/**
+ * @param {string} rank 
+ */
+const plural = rank => rank.at(-1) === 'x' ? rank + 'es' : rank + 's';
+
 const updates = {
     bot: {
         start: 'Ready when you are!',
@@ -51,9 +56,12 @@ const updates = {
         /**
          * @param {User} opponent 
          */
-        desiredRank: opponent => {
-            return `You show it to ${userMention(opponent.id)}.`;
-        }
+        desiredRank: opponent => `You show it to ${userMention(opponent.id)}.`,
+
+        /**
+         * @param {string} rank 
+         */
+        formedBook: rank => `You formed a book of ${bold(plural(rank))}!`
     }
 }
 

@@ -1,7 +1,6 @@
 const { Deck, Hand } = require('../cards');
-const { ButtonBuilder, StringSelectMenuBuilder } = require('@discordjs/builders');
-const { ActionRowBuilder, ButtonStyle, ComponentType, Message, MessagePayload } = require('discord.js');
-const ranks = require('../cards/ranks')
+const { ButtonBuilder, StringSelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const { ActionRowBuilder, ButtonStyle, ComponentType, Message, MessagePayload, StringSelectMenuInteraction } = require('discord.js');
 const emojis = require('../../emojis.json');
 
 /**
@@ -12,24 +11,20 @@ const emojis = require('../../emojis.json');
  *  componentType: ComponentType, 
  *  time?: number
  * }} options 
- * @returns {Promise<string|undefined>}
+ * @returns 
  */
 async function awaitSelection(options) {
     let { userId, message, componentType, time = 30000 } = options;
 
     try {
-        const filter = i => {
-            i.deferUpdate();
-            return i.user.id === userId;
-        };
+        const filter = i => (i.deferUpdate(), i.user.id === userId);
+        const messageComponent = await message.awaitMessageComponent({ filter, componentType, time });
+        
+        if (messageComponent instanceof StringSelectMenuInteraction) {
+            return messageComponent.values[0];
+        }
 
-        const messageComponent = await message.awaitMessageComponent({ 
-            filter, 
-            componentType,
-            time
-        });
-
-        return messageComponent.values ? messageComponent.values[0] : messageComponent.customId;
+        return messageComponent.customId;
     } catch {
         return undefined;
     }
@@ -47,7 +42,7 @@ async function disableComponent(options) {
     let { component, row, message } = options;
     component.setDisabled(true)
     row.setComponents(component);
-    await message.edit({ components: [ row ] });
+    message.edit({ components: [ row ] });
 }
 
 /**
@@ -64,13 +59,15 @@ async function disableComponent(options) {
 async function playerTurn(options) {
     let { userId, hand, message, editOptions, time } = options; 
 
-    const selectMenuOptions = hand.ranks.map(rank => ({
-            label: rank, 
-            description: `Ask for a ${rank}.`, 
-            value: rank,
-            emoji: emojis[rank.toLowerCase()]
-        })
-    );
+    /** @param {string} rank */
+    const rankToSelectMenuOption = rank => ({
+        label: rank, 
+        description: `Ask for a ${rank}.`, 
+        value: rank,
+        emoji: emojis[rank.toLowerCase()]
+    });
+
+    const selectMenuOptions = hand.ranks.map(rankToSelectMenuOption);
     
     const selectMenu = new StringSelectMenuBuilder()
         .setCustomId('select')

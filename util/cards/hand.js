@@ -1,8 +1,15 @@
-const { Collection, User } = require('discord.js');
+const { User } = require('discord.js');
 const { Card } = require('./card');
+const { Counter } = require('../general/counter');
 
 /** Class representing a hand of playing cards. */
 class Hand {
+    /** @type {Card[]} */
+    #knownCards = [];
+
+    /** @type {Map<string, Card[]>} */
+    #books = new Map();
+
     /**
      * Constructs a hand of playing cards.
      * @param {User} owner
@@ -23,11 +30,19 @@ class Hand {
     }
 
     /**
+     * Returns the number of books formed in this hand.
+     * @returns
+     */
+    get bookCount() {
+        return this.#books.size > 0 ? this.#books.size.toString() : 'None';
+    }
+
+    /**
      * Returns an array of card names in the hand.
      * @returns
      */
     get names() {
-        return this.cards.map(card => card.name);
+        return this.length > 0 ? this.cards.map(card => card.name) : [ 'None' ];
     }
 
     /**
@@ -35,7 +50,7 @@ class Hand {
      * @returns
      */
     get shorthand() {
-        return this.cards.map(card => card.shorthand);
+        return this.length > 0 ? this.cards.map(card => card.shorthand) : [ 'None' ];
     }
 
     /**
@@ -59,9 +74,26 @@ class Hand {
      * @returns
      */
     add(cards) {
-        cards instanceof Array ? this.cards.push(...cards) : this.cards.push(cards);
-        this.sort();
-        return [ cards ].flat();
+        if (!(cards instanceof Array)) cards = [ cards ];
+        return (this.cards.push(...cards), this.sort(), cards);
+    }
+
+    /**
+     * Finds a book and adds it to the hand.
+     * @returns
+     */
+    addBook() {
+        /** @type {Map<string, Card>} */
+        let counts = new Counter(this.cards, card => card.rankName);
+        
+        for (const rank of counts.keys()) {
+            if (counts.get(rank) < 4) continue;
+
+            const index = this.cards.findIndex(card => card.rankName === rank);
+            const cards = this.cards.splice(index, 4);
+
+            return (this.#books.set(rank, cards), { rank, cards });
+        }
     }
 
     /**

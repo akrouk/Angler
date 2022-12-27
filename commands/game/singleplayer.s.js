@@ -17,7 +17,7 @@ const board = (hand, description) => [{
     fields: [
         {
             name: 'Books',
-            value: 'None'
+            value: hand.bookCount
         },
         {
             name: 'Hand',
@@ -90,6 +90,12 @@ module.exports = {
             // If player had to go fish and drew the rank they selected, show it to the bot
             if (!from && rank === newCards[0].rankName) {
                 playerTurnUpdates.push(updates.player.desiredRank(botHand.owner));
+            }
+
+            const book = playerHand.addBook();
+
+            if (book) {
+                playerTurnUpdates.push(updates.player.formedBook(book.rank));
             }
             
             await updateBoard('player', playerTurnUpdates.join('\n'));
