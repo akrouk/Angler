@@ -92,6 +92,7 @@ async function playerTurn(options) {
  * Player chooses a card rank from their hand.
  * @param {{ 
  *  userId: string,
+ *  desiredRank: string,
  *  hand: Hand, 
  *  deck: Deck,
  *  message: Message<boolean>, 
@@ -101,7 +102,7 @@ async function playerTurn(options) {
  * @returns
  */
 async function goFish(options) {
-    let { userId, hand, deck, message, editOptions, time } = options; 
+    let { userId, desiredRank, hand, deck, message, editOptions, time } = options; 
 
     const button = new ButtonBuilder()
         .setCustomId('gofish')
@@ -122,7 +123,7 @@ async function goFish(options) {
 
     if (selection === 'gofish') {
         const draw = deck.draw();
-        return draw ? hand.add(draw) : [];
+        return draw ? (draw.known = (draw.rankName === desiredRank), hand.add(draw)) : [];
     } else {
         return undefined;
     }

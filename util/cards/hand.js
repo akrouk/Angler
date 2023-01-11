@@ -4,9 +4,6 @@ const { Counter } = require('../general/counter');
 
 /** Class representing a hand of playing cards. */
 class Hand {
-    /** @type {Card[]} */
-    #knownCards = [];
-
     /** @type {Map<string, Card[]>} */
     #books = new Map();
 
@@ -69,6 +66,21 @@ class Hand {
     }
 
     /**
+     * Converts hand to a string of cards in shorthand notation.
+     * @param {boolean} visible 
+     */
+    shorthandString(visible = true) {
+        if (visible) return this.shorthand.join(' | ');
+
+        const hiddenHand = this.cards
+            .filter(card => card.known)
+            .map(card => card.shorthand);
+
+        hiddenHand.push(...Array(this.cards.length - hiddenHand.length).fill('??'));
+        return hiddenHand.join(' | ');
+    }
+
+    /**
      * Adds playing cards to the hand.
      * @param {Card|Card[]} cards
      * @returns
@@ -113,6 +125,7 @@ class Hand {
         if (index >= 0) {
             // Exchange cards in this hand with other hand
             exchangedCards = this.cards.splice(index, count);
+            exchangedCards.forEach(card => card.known = true);
             hand.cards.push(...exchangedCards);
 
             // Sort both hands
